@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
+  <style>
+  
+  body {
+    font-family: 'Georgia', Times, Times New Roman, serif;
+    text-shadow: 1px 1px 1px #1e4442;
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/dust_scratches.png");
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/vintage-concrete.png");
+  }
+  
+  img {
+    width:200px;
+    height: 200px;
+    float:left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    box-shadow: 10px 10px 5px gray, -1px 0px 10px gray;
+    border-radius: 4px;
+    
+}
+  
+img:hover {
+	box-shadow: 10px 10px 5px blue, -1px 0px 10px blue;
+}
+
+#instructions {
+	padding: 15px;
+	box-shadow: 10px 10px 5px gray, -1px 0px 10px gray;
+	margin-bottom: 20px;
+background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/dust_scratches.png");
+}
+
+#instruction-btn {
+	box-shadow: 4px 4px 2px gray, -1px 0px 5px gray;
+    margin-bottom: 20px;
+}
+
+.centered{
+    margin: 0 auto;
+    /*border-style: solid;
+    border-color: red;
+    border-width: 2px;*/
+}
+
+  </style>
+  
+</head>
+<body>
+<!-- Add NavBar here -->
+
+<div class="container">
+<div class="centered">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-2">
+  		<div class="panel panel-primary">
+  			<div class="panel-heading">
+            	<h1>Crystal Game</h1>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="row">
+  	<div class="col-md-2 col-md-offset-2">
+      <!-- <div class="panel panel-default">	-->
+        <button type="button" id="instruction-btn" class="btn btn-info" data-toggle="collapse" data-target="#instructions">Instructions</button>
+      <!-- </div> -->
+    </div>
+      <div class="col-md-6">
+        <div id="instructions" class="collapse">
+          <p>You will be given a random number at the start of the game.</p>
+          <p>There are four crystals below.  By clicking on a crystal you will add a specific amount of points to your total score.</p>
+          <p>You win the game by matching your total score to the random number.  You lose the game if your total score goes above the 
+
+random number.</p>
+          <p>The value of each crystal is hidden from you until you click on it.</p>
+          <p>Each time when the game starts, the game will change the values of each crystal</p>
+        </div>
+      </div>
+
+  </div>
+  
+  <!-- Add the random number and win/losses columns here -->
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-2">
+      <div class="panel panel-primary">
+  		<div class="panel-heading">Random Number: 
+        <span id="randNum"> 0</span>
+        </div>
+  	  </div>
+    </div>
+    <div class="col-md-2 col-md-offset-2">
+    	<div class="panel panel-primary">
+    		<div class="panel-heading ">Wins: 
+			<span id="winsId">0</span>
+		</div>
+        </div>
+        <div class="panel panel-primary">
+    		<div class="panel-heading ">Losses: 
+			<span id="lossesId">0</span>
+		</div>
+        </div>
+    </div>
+
+<!-- Add the gem images -->
+
+  </div>
+  <div class="row">
+  	<div id="redImg" class="col-md-2 col-md-offset-2">
+      <img class="img-responsive" src="https://df2sm3urulav.cloudfront.net/tenants/gr/uploads/images/670000-
+
+674999/671627/5a8aa424c15f1.jpg">
+        <div class="caption">
+          <p>Red</p>
+        </div>
+    </div>
+    <div id="blueImg" class="col-md-2">
+      <img class="img-responsive" src="https://cdn.shopify.com/s/files/1/0380/5717/products/round-chatham-lab-grown-blue-sapphire-
+
+gems_1024x1024.png?v=1535067501">
+              <div class="caption">
+          <p>Blue</p>
+        </div>
+    </div>
+    <div id="yellowImg" class="col-md-2">
+      <img class="img-responsive" src="https://5.imimg.com/data5/VN/AJ/MY-23070319/yellow-sapphire-stone-500x500.jpg">
+        <div class="caption">
+          <p>Yellow</p>
+        </div>
+    </div>
+    <div id="greenImg" class="col-md-2">
+      <img class="img-responsive" src="https://3.imimg.com/data3/BU/FL/MY-12957375/green-sapphire-stone-500x500.jpg">
+        <div class="caption">
+          <p>Green</p>
+        </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 col-md-offset-2">
+      <div class="panel panel-primary ">
+        <div class="panel-heading">Your total score is: </div>
+      </div>
+    </div>
+  </div> 
+  
+  <div class="row">
+    <div class="col-md-3 col-md-offset-2">
+      <div class="panel panel-primary">
+  	    <div id="userScoreId" class="panel-heading">0</div>
+      </div>
+	</div>
+  </div>
+  
+  </div>
+  </div> <!-- END of the Container -->
+
+
+
+
+<script type="text/javascript">
+
+  // initialize variables and get the random number to display
+  // I'm giving the user some leeway so I'm making the range go from 20-50
+  	//var targetNumber = Math.floor(Math.random() * 10) + 21;
+    var targetNum = getRandIntRange(20, 51);
+    console.log("targetNum: " + targetNum)
+    //display the number:
+    randNum.textContent = targetNum;
+    //assign a value to each crystal
+    var redCrystal = getRandInt(10);
+    var blueCrystal = getRandInt(10);
+    var yellowCrystal = getRandInt(10);
+    var greenCrystal = getRandInt(10);
+    
+    var userScore = 0;
+    var wins = 0;
+    var losses = 0;
+
+$(document).ready(function() {
+
+})
+
+
+function initializeScreen() {
+    targetNum = getRandIntRange(20, 51);
+    console.log("targetNum: " + targetNum)
+    //display the number:
+    randNum.textContent = targetNum;
+    userScoreId.textContent = "0";
+    
+    //assign a value to each crystal
+    redCrystal = getRandInt(10);
+    blueCrystal = getRandInt(10);
+    yellowCrystal = getRandInt(10);
+    greenCrystal = getRandInt(10);
+    
+    userScore = 0;
+}
+
+function getRandNumBetween(min, max) {
+  return Math.random() * (max - min) + min;  // this returns a floating point number
+}
+
+function getRandIntRange(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function getRandInt(max) {
+  return Math.floor(Math.random() * (max) + 1);
+}
+
+
+$("#redImg").on("click", function() {
+	console.log("you clicked on the red gem");
+    console.log("red = " + redCrystal);
+    userScore += redCrystal;
+    console.log("userScore = " + userScore);
+    userScoreId.textContent = userScore;
+    console.log("targetNum = " + targetNum);
+    if (userScore > targetNum) {
+    	losses++;
+        lossesId.textContent = losses;
+        initializeScreen();
+    } else if (userScore == targetNum) {
+    	wins++
+        winsId.textContent = wins;
+        initializeScreen();
+    }
+});
+$("#blueImg").on("click", function() {
+	console.log("you clicked on the blue gem")
+    console.log("blue = " + blueCrystal);
+    userScore += blueCrystal;
+    console.log("userScore = " + userScore);
+    userScoreId.textContent = userScore;
+    console.log("targetNum = " + targetNum);
+    if (userScore > targetNum) {
+    	losses++;
+        lossesId.textContent = losses;
+        initializeScreen();
+    } else if (userScore == targetNum) {
+    	wins++
+        winsId.textContent = wins;
+        initializeScreen();
+    }
+});
+$("#yellowImg").on("click", function() {
+	console.log("you clicked on the yellow gem")
+    console.log("yellow = " + yellowCrystal);
+    userScore += yellowCrystal;
+    console.log("userScore = " + userScore);
+    userScoreId.textContent = userScore;
+    console.log("targetNum = " + targetNum);
+    if (userScore > targetNum) {
+    	losses++;
+        lossesId.textContent = losses;
+        initializeScreen();
+    } else if (userScore == targetNum) {
+    	wins++
+        winsId.textContent = wins;
+        initializeScreen();
+    }
+});
+$("#greenImg").on("click", function() {
+	console.log("you clicked on the green gem")
+    console.log("green = " + greenCrystal);
+    userScore += greenCrystal;
+    console.log("userScore = " + userScore);
+    userScoreId.textContent = userScore;
+    console.log("targetNum = " + targetNum);
+    if (userScore > targetNum) {
+    	losses++;
+        lossesId.textContent = losses;
+        initializeScreen();
+    } else if (userScore == targetNum) {
+    	wins++
+        winsId.textContent = wins;
+        initializeScreen();
+    }
+});
+
+  </script>
+
+
+</body>
+</html>
