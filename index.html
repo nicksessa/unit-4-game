@@ -167,7 +167,9 @@ gems_1024x1024.png?v=1535067501">
 
 
 <script type="text/javascript">
-
+$(document).ready(function() {
+  console.log("document loaded");
+})
   // initialize variables and get the random number to display
   // I'm giving the user some leeway so I'm making the range go from 20-50
   	//var targetNumber = Math.floor(Math.random() * 10) + 21;
@@ -185,9 +187,7 @@ gems_1024x1024.png?v=1535067501">
     var wins = 0;
     var losses = 0;
 
-$(document).ready(function() {
 
-})
 
 
 function initializeScreen() {
