@@ -184,26 +184,26 @@ gems_1024x1024.png?v=1535067501">
   
   <div class="row">
     <div class="col-md-3 col-md-offset-1">
-      <div class="panel panel-primary ">
-        <div class="panel-heading">Your total score is: </div>
+      <div class="row">
+        <div class="panel panel-primary ">
+          <div class="panel-heading">Your total score is: </div>
+        </div>
+      </div>
+      <div class="row">
+      <div class="panel panel-primary">
+  	    <div id="userScoreId" class="panel-heading">0</div>
+      </div>
       </div>
     </div>
     <div id="results-div" class="col-md-3 col-md-offset-1">
     	<div id="results" class="alert">
   			<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-  			<strong>You Lose!</strong>
+  			<strong>Results</strong>
 		</div>
     </div>
   </div> 
   
-  <div class="row">
-    <div class="col-md-3 col-md-offset-1">
-      <div class="panel panel-primary">
-  	    <div id="userScoreId" class="panel-heading">0</div>
-      </div>
-	</div>
-  </div>
-  
+ 
   </div>
   </div> <!-- END of the Container -->
 
@@ -232,11 +232,13 @@ $(document).ready(function() {
     var userScore = 0;
     var wins = 0;
     var losses = 0;
+    var gameOver = false;
 
 
 
 
 function initializeScreen() {
+	gameOver = false;
     targetNum = getRandIntRange(20, 51);
     console.log("targetNum: " + targetNum)
     //display the number:
@@ -271,28 +273,46 @@ function checkResults() {
     	losses++;
         lossesId.textContent = losses;
         //var node = document.createElement("div");
-        
+        gameOver = true;
         var x = document.getElementById("results");
-        x.textContent = "You Lose! Your total (" + userScore + ") exceeded the target (" + targetNum + ")";
+        x.textContent = "You Lose! Your total (" + userScore + ") exceeded the target (" + targetNum + ") - Press [SPACE] to play again.";
+        document.getElementById("results").style.backgroundColor = "red";
         x.style.display = "block";
         
-        initializeScreen();
+        document.onkeyup = function(e){
+        	console.log("waiting for spacebar event")
+    		if(e.keyCode == 32){
+            	var x = document.getElementById("results");
+            	x.style.display = "none";
+        		initializeScreen();
+    		}
+        }
+
+        
+        
     } else if (userScore == targetNum) {
     	wins++
         winsId.textContent = wins;
-        
+        gameOver = true;
         var x = document.getElementById("results");
-        x.textContent = "You Win!";
+        x.textContent = "You Win! - Press [SPACE] to play again.";
         document.getElementById("results").style.backgroundColor = "blue";
         //x.style.backgroundcolor = "blue";
         x.style.display = "block";
         
-        
-        initializeScreen();
+        document.onkeyup = function(e){
+        	console.log("waiting for spacebar event")
+    		if(e.keyCode == 32){
+            	var x = document.getElementById("results");
+            	x.style.display = "none";
+        		initializeScreen();
+    		}
+        }
     }
 }
 
 $("#redImg").on("click", function() {
+	if (!gameOver) {
 	console.log("you clicked on the red gem");
     console.log("red = " + redCrystal);
     userScore += redCrystal;
@@ -310,8 +330,10 @@ $("#redImg").on("click", function() {
         winsId.textContent = wins;
         initializeScreen();
     }*/
+    }
 });
 $("#blueImg").on("click", function() {
+	if(!gameOver) {
 	console.log("you clicked on the blue gem")
     console.log("blue = " + blueCrystal);
     userScore += blueCrystal;
@@ -329,8 +351,10 @@ $("#blueImg").on("click", function() {
         winsId.textContent = wins;
         initializeScreen();
     }*/
+    }
 });
 $("#yellowImg").on("click", function() {
+	if (!gameOver) {
 	console.log("you clicked on the yellow gem")
     console.log("yellow = " + yellowCrystal);
     userScore += yellowCrystal;
@@ -348,8 +372,10 @@ $("#yellowImg").on("click", function() {
         winsId.textContent = wins;
         initializeScreen();
     }*/
+    }
 });
 $("#greenImg").on("click", function() {
+	if (!gameOver) {
 	console.log("you clicked on the green gem")
     console.log("green = " + greenCrystal);
     userScore += greenCrystal;
@@ -367,6 +393,7 @@ $("#greenImg").on("click", function() {
         winsId.textContent = wins;
         initializeScreen();
     }*/
+    }
 });
 
   </script>
