@@ -13,6 +13,7 @@
     text-shadow: 1px 1px 1px #1e4442;
     background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/dust_scratches.png");
     background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/vintage-concrete.png");
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark-paths.png");
   }
   
   img {
@@ -42,12 +43,49 @@ background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/
     margin-bottom: 20px;
 }
 
-.centered{
+.container{
     margin: 0 auto;
     /*border-style: solid;
     border-color: red;
     border-width: 2px;*/
 }
+
+.centered{
+    margin: 20px auto;
+    width: 900px;
+    /*border-style: solid;
+    border-color: green;
+    border-width: 2px;*/
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/vintage-concrete.png");
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 10px 10px 5px black, -1px 0px 10px black;
+}
+
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  display: none;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+
 
   </style>
   
@@ -58,7 +96,7 @@ background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/
 <div class="container">
 <div class="centered">
   <div class="row">
-    <div class="col-md-4 col-md-offset-2">
+    <div class="col-md-4 col-md-offset-1">
   		<div class="panel panel-primary">
   			<div class="panel-heading">
             	<h1>Crystal Game</h1>
@@ -68,7 +106,7 @@ background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/
   </div>
   
   <div class="row">
-  	<div class="col-md-2 col-md-offset-2">
+  	<div class="col-md-2 col-md-offset-1">
       <!-- <div class="panel panel-default">	-->
         <button type="button" id="instruction-btn" class="btn btn-info" data-toggle="collapse" data-target="#instructions">Instructions</button>
       <!-- </div> -->
@@ -90,14 +128,14 @@ random number.</p>
   <!-- Add the random number and win/losses columns here -->
 
   <div class="row">
-    <div class="col-md-4 col-md-offset-2">
+    <div class="col-md-4 col-md-offset-1">
       <div class="panel panel-primary">
   		<div class="panel-heading">Random Number: 
         <span id="randNum"> 0</span>
         </div>
   	  </div>
     </div>
-    <div class="col-md-2 col-md-offset-2">
+    <div class="col-md-2 col-md-offset-1">
     	<div class="panel panel-primary">
     		<div class="panel-heading ">Wins: 
 			<span id="winsId">0</span>
@@ -114,7 +152,7 @@ random number.</p>
 
   </div>
   <div class="row">
-  	<div id="redImg" class="col-md-2 col-md-offset-2">
+  	<div id="redImg" class="col-md-2 col-md-offset-1">
       <img class="img-responsive" src="https://df2sm3urulav.cloudfront.net/tenants/gr/uploads/images/670000-
 
 674999/671627/5a8aa424c15f1.jpg">
@@ -145,15 +183,21 @@ gems_1024x1024.png?v=1535067501">
   </div>
   
   <div class="row">
-    <div class="col-md-3 col-md-offset-2">
+    <div class="col-md-3 col-md-offset-1">
       <div class="panel panel-primary ">
         <div class="panel-heading">Your total score is: </div>
       </div>
     </div>
+    <div id="results-div" class="col-md-3 col-md-offset-1">
+    	<div id="results" class="alert">
+  			<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  			<strong>You Lose!</strong>
+		</div>
+    </div>
   </div> 
   
   <div class="row">
-    <div class="col-md-3 col-md-offset-2">
+    <div class="col-md-3 col-md-offset-1">
       <div class="panel panel-primary">
   	    <div id="userScoreId" class="panel-heading">0</div>
       </div>
@@ -167,9 +211,11 @@ gems_1024x1024.png?v=1535067501">
 
 
 <script type="text/javascript">
+
 $(document).ready(function() {
   console.log("document loaded");
 })
+
   // initialize variables and get the random number to display
   // I'm giving the user some leeway so I'm making the range go from 20-50
   	//var targetNumber = Math.floor(Math.random() * 10) + 21;
@@ -220,6 +266,31 @@ function getRandInt(max) {
   return Math.floor(Math.random() * (max) + 1);
 }
 
+function checkResults() {
+    if (userScore > targetNum) {
+    	losses++;
+        lossesId.textContent = losses;
+        //var node = document.createElement("div");
+        
+        var x = document.getElementById("results");
+        x.textContent = "You Lose! Your total (" + userScore + ") exceeded the target (" + targetNum + ")";
+        x.style.display = "block";
+        
+        initializeScreen();
+    } else if (userScore == targetNum) {
+    	wins++
+        winsId.textContent = wins;
+        
+        var x = document.getElementById("results");
+        x.textContent = "You Win!";
+        document.getElementById("results").style.backgroundColor = "blue";
+        //x.style.backgroundcolor = "blue";
+        x.style.display = "block";
+        
+        
+        initializeScreen();
+    }
+}
 
 $("#redImg").on("click", function() {
 	console.log("you clicked on the red gem");
@@ -228,6 +299,8 @@ $("#redImg").on("click", function() {
     console.log("userScore = " + userScore);
     userScoreId.textContent = userScore;
     console.log("targetNum = " + targetNum);
+    checkResults();
+    /*
     if (userScore > targetNum) {
     	losses++;
         lossesId.textContent = losses;
@@ -236,7 +309,7 @@ $("#redImg").on("click", function() {
     	wins++
         winsId.textContent = wins;
         initializeScreen();
-    }
+    }*/
 });
 $("#blueImg").on("click", function() {
 	console.log("you clicked on the blue gem")
@@ -245,6 +318,8 @@ $("#blueImg").on("click", function() {
     console.log("userScore = " + userScore);
     userScoreId.textContent = userScore;
     console.log("targetNum = " + targetNum);
+    checkResults();
+    /*
     if (userScore > targetNum) {
     	losses++;
         lossesId.textContent = losses;
@@ -253,7 +328,7 @@ $("#blueImg").on("click", function() {
     	wins++
         winsId.textContent = wins;
         initializeScreen();
-    }
+    }*/
 });
 $("#yellowImg").on("click", function() {
 	console.log("you clicked on the yellow gem")
@@ -262,6 +337,8 @@ $("#yellowImg").on("click", function() {
     console.log("userScore = " + userScore);
     userScoreId.textContent = userScore;
     console.log("targetNum = " + targetNum);
+    checkResults();
+    /*
     if (userScore > targetNum) {
     	losses++;
         lossesId.textContent = losses;
@@ -270,7 +347,7 @@ $("#yellowImg").on("click", function() {
     	wins++
         winsId.textContent = wins;
         initializeScreen();
-    }
+    }*/
 });
 $("#greenImg").on("click", function() {
 	console.log("you clicked on the green gem")
@@ -279,6 +356,8 @@ $("#greenImg").on("click", function() {
     console.log("userScore = " + userScore);
     userScoreId.textContent = userScore;
     console.log("targetNum = " + targetNum);
+    checkResults();
+    /*
     if (userScore > targetNum) {
     	losses++;
         lossesId.textContent = losses;
@@ -287,7 +366,7 @@ $("#greenImg").on("click", function() {
     	wins++
         winsId.textContent = wins;
         initializeScreen();
-    }
+    }*/
 });
 
   </script>
